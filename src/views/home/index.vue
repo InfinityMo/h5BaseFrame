@@ -1,6 +1,5 @@
 <template>
-  <div class="page"
-       ref="container">
+  <div class="page">
     <div class="stricky">
       <van-dropdown-menu active-color="#1989fa"
                          class="dropdown">
@@ -9,11 +8,11 @@
       </van-dropdown-menu>
       <van-cell-group class="cell-group">
         <van-cell title="检查时间"
-                  value="15分钟前" />
+                  :value="linkPamams.checkTime" />
         <van-cell title="检查链接数"
-                  value="37" />
+                  :value="linkPamams.linkNum" />
         <van-cell title="敏感词链接数"
-                  value="40" />
+                  :value="linkPamams.sensitiveWords" />
       </van-cell-group>
       <ul class="flex-between table-title">
         <li>标题</li>
@@ -26,11 +25,6 @@
                         head-height=60
                         pulling-text="下拉刷新"
                         @refresh="onRefresh">
-        <!-- <template #pulling="props">
-          <img class="doge"
-               src="https://img.yzcdn.cn/vant/doge.png"
-               :style="{ transform: `scale(${props.distance / 80})` }" />
-        </template> -->
         <template #loosing>
           <img class="doge"
                src="@/assets/img/logo.png" />
@@ -58,7 +52,6 @@
         </van-list>
       </van-pull-refresh>
     </div>
-
   </div>
 </template>
 <script>
@@ -76,20 +69,25 @@ export default {
   },
   data () {
     return {
-      container: null,
       selectShop: '',
-      shops: [{
-        value: 1,
-        text: '悦诗风吟官方旗舰店'
+      shops: [
+        {
+          value: 1,
+          text: '悦诗风吟官方旗舰店'
+        },
+        {
+          value: 2,
+          text: '珂润官方旗舰店'
+        },
+        {
+          value: 3,
+          text: '花王官方旗舰店'
+        }],
+      linkPamams: {
+        checkTime: '15分钟前',
+        linkNum: 37,
+        sensitiveWords: 40
       },
-      {
-        value: 2,
-        text: '珂润官方旗舰店'
-      },
-      {
-        value: 3,
-        text: '花王官方旗舰店'
-      }],
       list: [
         {
           id: 1,
@@ -158,12 +156,12 @@ export default {
     //   forbidClick: true,
     //   loadingType: 'spinner'
     // })
-    this.$toast.show()
-    setTimeout(() => {
-      this.$toast.hide()
-    }, 5000)
+    // this.$toast.show()
+    // setTimeout(() => {
+    //   this.$toast.hide()
+    // }, 200)
     // alert(sessionStorage.getItem('userCode'))
-    this.container = this.$refs.container
+    // this.container = this.$refs.container
     this.selectShop = 3
   },
   methods: {
@@ -172,12 +170,15 @@ export default {
       const schemaLink = link.replace(/^https/i, 'taobao')
       const reg = /mobi/i
       if (reg.test(window.navigator.userAgent.toLowerCase())) {
-        Dialog.confirm({
-          message: '是否打开淘宝APP？'
-        }).then(() => {
-          window.location.href = schemaLink
-        }).catch(() => {
-          window.open(selfLink)
+        // 直接唤起淘宝
+        this.$dd.biz.util.openLink({
+          url: schemaLink, // 页面名称
+          onFail: function () {
+            // 如果直接唤起淘宝失败，则直接打开链接
+            this.$dd.biz.util.openLink({
+              url: selfLink
+            })
+          }
         })
       } else {
         window.open(selfLink)
