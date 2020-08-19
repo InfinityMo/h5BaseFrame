@@ -163,8 +163,16 @@ export default {
     // alert(sessionStorage.getItem('userCode'))
     // this.container = this.$refs.container
     this.selectShop = 3
+    // this.testRequest()
   },
   methods: {
+    testRequest () {
+      this.$request.get('https://randomuser.me/api').then(res => {
+        this.linkPamams.checkTime = res.info.results
+        this.linkPamams.linkNum = res.info.version
+        this.linkPamams.sensitiveWords = res.info.seed
+      })
+    },
     toTaobao (link) {
       const selfLink = link
       const schemaLink = link.replace(/^https/i, 'taobao')
@@ -181,7 +189,10 @@ export default {
           }
         })
       } else {
-        window.open(selfLink)
+        this.$dd.biz.util.openLink({
+          url: selfLink
+        })
+        // window.open(selfLink)
       }
     },
     onLoad () {

@@ -4,8 +4,8 @@ Time：2020-07-27
 */
 import axios from 'axios'
 import { stringify } from 'qs'
-import store from '@/store'
 import { Toast } from 'vant'
+import loading from '@/common/utils/loading'
 // import router from '@/router'
 // 创建axios实例，设置超时时间为4S
 const instance = axios.create({
@@ -41,7 +41,7 @@ const removePending = (config) => {
   for (const p in pending) {
     if (pending[p].url === url) {
       pending[p].cancel('cancelToken')
-      store.commit('setSpinning', false)
+      loading.hide()
       pending.splice(p, 1)
     }
   }
@@ -65,11 +65,11 @@ instance.interceptors.request.use(
 )
 // 添加响应拦截器
 instance.interceptors.response.use(response => {
-  store.commit('setSpinning', false)
+  loading.hide()
   // removePending(response.config) // 在一个ajax响应后再执行一下取消操作，把已经完成的请求从pending中移除
   return response.data // 过滤响应对象里多余的字段，只返回需要的data
 }, error => {
-  store.commit('setSpinning', false)
+  loading.hide()
   // 如果错误是axios.Cancel构造出来的实例则说明多余的请求被拦截掉了，直接返回promise抛出错误信息
   // if (error.constructor === axios.Cancel) return Promise.reject(error)
   // 添加前端提示code
@@ -100,14 +100,14 @@ export default {
   post (url, params, spinning) {
     trimParams(params)
     if (!spinning) {
-      store.commit('setSpinning', true)
+      loading.show()
     }
     return instance.post(url, params)
   },
   // get 请求
   get (url, params, spinning) {
     if (!spinning) {
-      store.commit('setSpinning', true)
+      loading.show()
     }
     return instance.get(url, params)
   }
