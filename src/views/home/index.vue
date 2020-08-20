@@ -151,19 +151,7 @@ export default {
     })
   },
   mounted () {
-    // this.$toast.loading({
-    //   message: '加载中...',
-    //   forbidClick: true,
-    //   loadingType: 'spinner'
-    // })
-    // this.$toast.show()
-    // setTimeout(() => {
-    //   this.$toast.hide()
-    // }, 200)
-    // alert(sessionStorage.getItem('userCode'))
-    // this.container = this.$refs.container
     this.selectShop = 3
-    // this.testRequest()
   },
   methods: {
     testRequest () {

@@ -8,7 +8,7 @@ import axios from '@/common/network/request'
 import debounce from '@/common/utils/debounce'
 import * as dd from 'dingtalk-jsapi'
 // 路由拦截
-import './common/utils/permission'
+// import './common/utils/permission'
 import loading from '@/common/utils/loading'
 // 挂载请求
 Vue.prototype.$request = axios
