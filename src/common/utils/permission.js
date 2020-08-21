@@ -7,10 +7,13 @@ import router from '../../router/index'
 import store from '../../store/index'
 import * as dd from 'dingtalk-jsapi'
 router.beforeEach((to, from, next) => {
-  if (to.meta.title) {
-    document.title = to.meta.title
-  }
-  if (to.path === '/403' || to.path === '/404') {
+  // if (to.meta.title) {
+  //   document.title = to.meta.title
+  // }
+  store.commit('UPDATE_PATH', to.path)
+  store.commit('UPDATE_META', to.meta)
+  const whiteList = ['/401', '/403', '/404']
+  if (whiteList.includes(to.path)) {
     next()
     return
   }
@@ -29,8 +32,8 @@ router.beforeEach((to, from, next) => {
             next()
           },
           onFail: function () {
-            document.title = '403'
-            next({ path: '/403' })
+            document.title = '401'
+            next({ path: '/401' })
           }
         })
       })

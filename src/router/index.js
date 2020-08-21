@@ -15,16 +15,28 @@ const routes = [
       isShowBottomNav: false,
       keepAlive: true
     }
-  }, {
+  },
+  {
+    path: '/401',
+    name: 'forbidden',
+    meta: {
+      title: '401',
+      isShowHead: true,
+      isShowTitle: true
+    },
+    component: () => import('@/views/401/index.vue')
+  },
+  {
     path: '/403',
-    name: 'Forbidden',
+    name: 'limit',
     meta: {
       title: '403',
       isShowHead: true,
       isShowTitle: true
     },
     component: () => import('@/views/403/index.vue')
-  }, {
+  },
+  {
     path: '*',
     name: 'None',
     meta: {

@@ -1,15 +1,15 @@
 <template>
   <div class="flex-center forbidden-wrap">
     <div class="forbidden">
-      <img src="@/assets/img/403.svg">
-      <p>请使用钉钉APP查看！</p>
+      <img src="@/assets/img/401.svg">
+      <p>对不起，您无权限访问！请联系管理员！</p>
     </div>
   </div>
 </template>
 <script>
 
 export default {
-  name: 'limit',
+  name: 'forbidden',
   data () {
     return {
 
